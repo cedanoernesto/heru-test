@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, FlatList, View, StyleSheet, Image, Pressable, ActivityIndicator } from 'react-native';
+import { Text, FlatList, View, Image, Pressable, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { colors } from '../../styles/colors';

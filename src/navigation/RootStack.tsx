@@ -13,6 +13,7 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const { HomeUser, Home, Users, userDetails } = screenNames;
+const HeaderLeft = ({ navigate }:  any) => <HeaderBackButton onPress={() => navigate(Home)} />
 const UserStack = () => (
   <Stack.Navigator initialRouteName={HomeUser} headerMode="screen">
     <Stack.Screen
@@ -21,19 +22,18 @@ const UserStack = () => (
       options={({ navigation }) => ({
         title: 'Usuarios',
         headerShown: true,
-        headerLeft: () => (
-          <HeaderBackButton onPress={() => navigation.navigate(Home)} />
-        )
+        headerLeft: HeaderLeft.bind(this, navigation)
       })}
     />
     <Stack.Screen name={userDetails} component={UserDetailsScreen} />
   </Stack.Navigator>
 );
-export default () => (
+const RootStack = () => (
   <NavigationContainer>
     <Drawer.Navigator initialRouteName={Home} headerMode="none" screenOptions={{ headerShown: true }}>
-    <Stack.Screen name={Home} component={HomeScreen} options={{ title: 'Inicio' }} />
-    <Stack.Screen name={Users} component={UserStack} options={{ headerShown: false,  title: 'Usuarios' }}   />
-  </Drawer.Navigator>
-</NavigationContainer>
-)
+      <Stack.Screen name={Home} component={HomeScreen} options={{ title: 'Inicio' }} />
+      <Stack.Screen name={Users} component={UserStack} options={{ headerShown: false, title: 'Usuarios' }} />
+    </Drawer.Navigator>
+  </NavigationContainer>
+);
+export default RootStack;
