@@ -6,7 +6,8 @@ import store from './src/redux';
 import { mapboxAccessToken } from './src/config/index';
 import RootStack from './src/navigation/RootStack';
 import SplashScreen from 'react-native-splash-screen';
-console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+// @ts-ignore
+console.disableYellowBox = true;
 // setting token for Mapbox
 MapboxGL.setAccessToken(mapboxAccessToken);
 const App: () => any = () => {
