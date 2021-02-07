@@ -1,14 +1,14 @@
-import defaultAxios from 'axios'
+import axios from 'axios';
+import { User } from '../../models/user';
 
-const axios = defaultAxios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com/',
-  headers: {'Content-Type': 'application/json'}
+const axiosInstance = axios.create({
+  baseURL: 'https://jsonplaceholder.typicode.com/'
 });
-export const getAllUsers = async () => {
+export const getUsers = async (): Promise<User[]> => {
   try {
-    const users = await axios.get('users?_limit=5')
-    return users.data
+    const users = await axiosInstance.get('users')
+    return users.data;
   } catch(err) {
-    return console.error(err)
+    console.error(err);
   }
 }
