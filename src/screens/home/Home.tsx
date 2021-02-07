@@ -1,61 +1,32 @@
-import React, { useEffect } from 'react';
-import { Text, FlatList, View, StatusBar, StyleSheet, Image } from 'react-native';
-import { connect } from 'react-redux';
-import { userActions } from '../../redux/actions';
-const { GET_USERS_REQUESTED } = userActions;
-
-const WelcomeScreen = ({
-    user: { loading, users },
-    getUsers,
-    navigation
-  }) => {
-    const renderItem = ({ item }) => (
-      <View style={styles.item}>
-        <Image style={styles.img} source={require('../../../img/user.png')}/>
-        <View>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.email}>{item.email}</Text>
-        </View>
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import Mapbox from "@react-native-mapbox-gl/maps";
+import Clock from '../../components/Clock';
+import styles from './style';
+const HomeScreen = (): $React$Node => {
+  const { MapView, UserLocation, Camera } = Mapbox;
+  const [followUser, setFollowUser] = useState(false);
+  const requestPermission = async () => {
+    const permission = await Mapbox.requestAndroidLocationPermissions();
+    if (permission) {
+      setFollowUser(permission);
+    }
+  }
+  useEffect(() => {
+    requestPermission();
+  }, []);
+  return (
+    <View style={styles.container}>
+      <View style={styles.clockContainer}>
+        <Clock/>
       </View>
-    );
-    useEffect(() => {
-        getUsers();
-      }, []);
-      console.log(loading, users);
-      return (
-        <FlatList
-        data={users}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-      )
+      <View style={styles.mapContainer}>
+        <MapView  styleURL={Mapbox.StyleURL.Street} style={styles.map} >
+          <Camera followZoomLevel={14} followUserMode={Mapbox.UserTrackingModes.Follow} followUserLocation={followUser}/>
+          <UserLocation animated={true}  />
+        </MapView>
+      </View>
+    </View>
+  );
   }
-const mapStateToProps = (state) => ({ user: state.user });
-const mapDispatchToProps = (dispatch) => ({
-    getUsers: () => dispatch({ type: GET_USERS_REQUESTED }),
-});
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    flexDirection: 'row',
-    padding: 10,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  name: {
-    justifyContent: 'flex-start',
-    fontSize: 20,
-  },
-  email: {
-    fontSize: 12,
-  },
-  img: {
-    width: 36,
-    height: 36,
-    marginRight: 20
-  }
-})
-export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen)
+export default HomeScreen;

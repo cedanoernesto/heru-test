@@ -1,25 +1,24 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import HomeScreen from './src/screens/home/Home';
+import MapboxGL from "@react-native-mapbox-gl/maps";
+// redux store
 import store from './src/redux';
-const Stack = createStackNavigator();
-const App: () => React$Node = () => {
+import { mapboxAccessToken } from './src/config/index';
+import RootStack from './src/navigation/RootStack';
+import SplashScreen from 'react-native-splash-screen';
+console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+// setting token for Mapbox
+MapboxGL.setAccessToken(mapboxAccessToken);
+const App: () => any = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+
+  })
   return (
     <Provider store={store}>
-      <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+     <RootStack/>
   </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-
-});
 
 export default App;
